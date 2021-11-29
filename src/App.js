@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Alert from "./components/layout/Alert";
@@ -7,47 +7,36 @@ import User from "./components/users/User";
 import Search from "./components/users/Search";
 import About from "./components/pages/About";
 import GithubState from "./context/github/GithubState";
+import AlertState from "./context/alert/AlertState";
 import "./App.css";
 
 const App = () => {
-  const [alert, setAlert] = useState(null);
-
-  const showAlert = (msg, type) => {
-    setAlert({ msg, type });
-    setTimeout(() => setAlert(null), 5000);
-  };
-
   return (
     <GithubState>
-      <Router>
-        <div className="App">
-          <Navbar />
-          <div className="container">
-            <Alert alert={alert} />
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={
-                  <Fragment>
-                    <Search setAlert={showAlert} />
-                    <Users />
-                  </Fragment>
-                }
-              />
-              <Route exact path="/about" element={<About />} />
-              <Route
-                exact
-                path="/user/:login"
-                element={
-                  <User
-                  />
-                }
-              />
-            </Routes>
+      <AlertState>
+        <Router>
+          <div className="App">
+            <Navbar />
+            <div className="container">
+              <Alert />
+              <Routes>
+                <Route
+                  exact
+                  path="/"
+                  element={
+                    <Fragment>
+                      <Search />
+                      <Users />
+                    </Fragment>
+                  }
+                />
+                <Route exact path="/about" element={<About />} />
+                <Route exact path="/user/:login" element={<User />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </AlertState>
     </GithubState>
   );
 };
