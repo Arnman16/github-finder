@@ -97,6 +97,9 @@ img {
 .text-left {
   text-align: left;
 }
+.fill-height {
+  height: 100%;
+}
 
 /* Center All */
 .all-center {
