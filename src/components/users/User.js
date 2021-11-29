@@ -1,13 +1,15 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useContext } from "react";
 import Spinner from "../layout/Spinner";
-import PropTypes from "prop-types";
 import Repos from "../repos/Repos";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import GithubContext from "../../context/github/githubContext";
 
-const User = ({ loading, user, repos, getUser, getUserRepos }) => {
+const User = () => {
   // ON MOUNT
+  const { getUser, user, loading, getUserRepos, repos } =
+    useContext(GithubContext);
   let username = useParams().login;
   useEffect(() => {
     getUser(username);
@@ -68,7 +70,12 @@ const User = ({ loading, user, repos, getUser, getUserRepos }) => {
               <p>{bio}</p>
             </Fragment>
           )}
-          <a href={html_url} className="btn btn-dark my-1">
+          <a
+            href={html_url}
+            className="btn btn-dark my-1"
+            rel="noreferrer"
+            target="_blank"
+          >
             Visit Github profile
           </a>
           <ul>
@@ -89,7 +96,10 @@ const User = ({ loading, user, repos, getUser, getUserRepos }) => {
             <li>
               {blog && (
                 <Fragment>
-                  <strong>Website:</strong> {blog}
+                  <strong>Website:</strong>{" "}
+                  <a href={blog} rel="noreferrer" target="_blank">
+                    {blog}
+                  </a>
                 </Fragment>
               )}
             </li>
@@ -112,12 +122,5 @@ const User = ({ loading, user, repos, getUser, getUserRepos }) => {
       <Repos repos={repos} />
     </Fragment>
   );
-};
-User.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  user: PropTypes.object.isRequired,
-  repos: PropTypes.array.isRequired,
-  getUser: PropTypes.func.isRequired,
-  getUserRepos: PropTypes.func.isRequired,
 };
 export default User;
